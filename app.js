@@ -1,4 +1,5 @@
 //jshint esversion:6
+require('dotenv').config();
 const express=require("express");
 const _=require("lodash");
 const bodyParser=require("body-parser");
@@ -23,12 +24,15 @@ const userSchema=new mongoose.Schema({
 });
 
 //using secret instead of two keys
-const secret="Thisisourlittlesecret.";
+//const secret="Thisisourlittlesecret.";
 //userSchema.plugin(encrypt,{secret:secret});//na ovaj način kriptirali bismo cijelu bazu podataka što nije uvijek poželjno
 //moramo navesti change opcije kojima navodimo da želimo kriptirati samo određena polja
 //CREATING DB MODEL BASED ON DB userSchema
+//userSchema.plugin(encrypt,{secret:secret, encryptedFields:["password"]});
 
-userSchema.plugin(encrypt,{secret:secret, encryptedFields:["password"]});
+userSchema.plugin(encrypt,{secret:prosess.env.SECRET, encryptedFields:["password"]});
+
+
 const User=new mongoose.model("User",userSchema);
 
 
